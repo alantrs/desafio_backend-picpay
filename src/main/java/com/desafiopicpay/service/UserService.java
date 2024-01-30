@@ -2,8 +2,10 @@ package com.desafiopicpay.service;
 
 import com.desafiopicpay.domain.user.User;
 import com.desafiopicpay.domain.user.UserRequestDTO;
+import com.desafiopicpay.domain.user.UserResponseDTO;
 import com.desafiopicpay.domain.user.UserType;
 import com.desafiopicpay.repositories.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,8 +16,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository){
+    private final ModelMapper modelMapper;
+
+    public UserService(UserRepository userRepository, ModelMapper modelMapper){
         this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     public void validateTransaction(User sender, BigDecimal amount) throws Exception {
@@ -28,13 +33,13 @@ public class UserService {
         }
     }
 
-    public User findUserById(Long id) throws Exception {
-        return userRepository.findById(id).orElseThrow(() -> new Exception("Usuario não encontrado"));
+    public UserResponseDTO findUserById(Long id) throws Exception {
+        UserResponseDTO responseDTO = modelMapper.map(userRepository.findById(id).orElseThrow(() -> new Exception("Usuario não encontrado")), UserResponseDTO.class);
+        return responseDTO;
     }
 
-//    public void saveUser(UserRequestDTO user){
-//        this.userRepository.save(user);
-//    }
-
-
+    public void saveUser(UserRequestDTO request){
+        User user = modelMapper.map(request, User.class);
+        userRepository.save(user);
+    }
 }
