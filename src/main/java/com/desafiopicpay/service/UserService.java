@@ -38,8 +38,9 @@ public class UserService {
         return responseDTO;
     }
 
-    public void saveUser(UserRequestDTO request){
+    public UserResponseDTO saveUser(UserRequestDTO request){
         User user = modelMapper.map(request, User.class);
-        userRepository.save(user);
+        UserResponseDTO userResponse = modelMapper.map(userRepository.save(user), UserResponseDTO.class);
+        return userResponse;
     }
 }
