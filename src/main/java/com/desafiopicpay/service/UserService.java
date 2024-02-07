@@ -9,7 +9,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -40,7 +42,15 @@ public class UserService {
 
     public UserResponseDTO saveUser(UserRequestDTO request){
         User user = modelMapper.map(request, User.class);
-        UserResponseDTO userResponse = modelMapper.map(userRepository.save(user), UserResponseDTO.class);
+        User userSaved = userRepository.save(user);
+        UserResponseDTO userResponse = modelMapper.map(userSaved, UserResponseDTO.class);
         return userResponse;
+    }
+
+    public List<UserResponseDTO> userList(){
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserResponseDTO.class))
+                .collect(Collectors.toList());
     }
 }

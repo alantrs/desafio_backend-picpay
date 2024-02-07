@@ -1,14 +1,16 @@
 package com.desafiopicpay.domain.user;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 
-public record UserRequestDTO(
-        String firstName,
-        String lastName,
-        String document,
-        String email,
-        String password,
-        BigDecimal balance,
-        UserType userType) {
-
+@Data
+public class UserRequestDTO{
+    private String firstName;
+    private String lastName;
+    private String document;
+    private String email;
+    private String password;
+    private BigDecimal balance;
+    private UserType userType;
 }

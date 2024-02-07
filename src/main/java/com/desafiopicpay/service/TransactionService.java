@@ -33,24 +33,24 @@ public class TransactionService {
     }
 
     public void createTransaction(TransactionalRequestDTO request) throws Exception {
-        User sender = modelMapper.map(userService.findUserById(request.senderId()), User.class);
-        User receiver = modelMapper.map(userService.findUserById(request.receiverId()), User.class);
+        User sender = modelMapper.map(userService.findUserById(request.getSenderId()), User.class);
+        User receiver = modelMapper.map(userService.findUserById(request.getReceiverId()), User.class);
 
-        userService.validateTransaction(sender, request.value());
+        userService.validateTransaction(sender, request.getValue());
 
-        Boolean isAuthorized = this.authorizeTransactional(sender, request.value());
+        Boolean isAuthorized = this.authorizeTransactional(sender, request.getValue());
         if(!isAuthorized){
             throw new Exception();
         }
 
         Transaction transaction = new Transaction();
-        transaction.setAmount(request.value());
+        transaction.setAmount(request.getValue());
         transaction.setSender(sender);
         transaction.setReceiver(receiver);
         transaction.setTimestamp(LocalDateTime.now());
 
-        sender.setBalance(sender.getBalance().subtract(request.value()));
-        receiver.setBalance(receiver.getBalance().add(request.value()));
+        sender.setBalance(sender.getBalance().subtract(request.getValue()));
+        receiver.setBalance(receiver.getBalance().add(request.getValue()));
 
         transactionalRepository.save(transaction);
         userService.saveUser(modelMapper.map(sender, UserRequestDTO.class));

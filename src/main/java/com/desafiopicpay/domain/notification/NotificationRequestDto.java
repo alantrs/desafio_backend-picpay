@@ -1,4 +1,12 @@
 package com.desafiopicpay.domain.notification;
 
-public record NotificationRequestDto(String email, String message) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class NotificationRequestDto{
+
+    private String email;
+    private String message;
 }

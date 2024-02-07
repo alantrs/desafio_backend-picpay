@@ -2,18 +2,12 @@ package com.desafiopicpay.domain.user;
 
 import com.desafiopicpay.domain.transaction.Transaction;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Entity(name = "users")
 @Table(name = "users")
 public class User {
